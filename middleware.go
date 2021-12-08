@@ -24,10 +24,11 @@ func DefaultErrorHandlerError(c echo.Context, err error, _ *http.Request, sp ope
 	}
 }
 
-func Middleware(componentName string, errorHandler ErrorHandler) echo.MiddlewareFunc {
-	if errorHandler == nil {
-		errorHandler = DefaultErrorHandlerError
-	}
+func Middleware(componentName string) echo.MiddlewareFunc {
+	return MiddlewareWithErrorHandler(componentName, DefaultErrorHandlerError)
+}
+
+func MiddlewareWithErrorHandler(componentName string, errorHandler ErrorHandler) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 
